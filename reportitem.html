@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Firebase COMPAT Version (IMPORTANT) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/assets/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>Campus Finder | AISC</title>
+    <style>
+        .box button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        .box button:active {
+            transform: scale(0.98);
+        }
+
+        #report-btn {
+            background-color: #2196F3;
+        }
+
+        #report-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        #find-btn {
+            background-color: #f44336;
+        }
+
+        #find-btn:hover {
+            background-color: #da190b;
+        }
+
+        .box {
+            width: 800px;
+        }
+
+        /* Logout Button Default Style */
+        #logout-btn {
+            position: fixed;
+            /* scroll ke time bhi dikhe */
+            top: 20px;
+            right: 20px;
+            padding: 12px 18px;
+            border: none;
+            background-color: rgb(66, 66, 226);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Hover & Active */
+        #logout-btn:hover {
+            background-color: blue;
+            transform: scale(1.05);
+        }
+
+        #logout-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Inputs */
+        .box input[type="text"],
+        .box input[type="date"],
+        .box input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+
+        .box input:focus {
+            border-color: #2196F3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.4);
+        }
+
+        /* Submit Button */
+        .box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .box button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #4CAF50, #43A047);
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .box button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .box textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            resize: none;
+            transition: 0.3s;
+        }
+
+        .box textarea:focus {
+            border-color: #2196F3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(33, 150, 243, 0.4);
+        }
+
+        .box .f1 {
+            display: flex;
+            gap: 10px;
+        }
+
+
+        /* Responsive for smaller screens */
+        @media (max-width: 768px) {
+            #logout-btn {
+                top: 15px;
+                right: 15px;
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #logout-btn {
+                top: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="home">
+        <button id="logout-btn">Logout</button>
+        <div class="box">
+            <!-- <img src="assets/aisc-logo.png" alt="AISC Logo"> -->
+            <h2>Report Found Item</h2>
+            <form class="form">
+                <div class="f1">
+                    <input type="text" name="item-name" placeholder="Item Name"><br>
+                    <input type="date" name="date-found" placeholder="Date Found" required><br>
+
+                </div>
+                <textarea name="location-found" placeholder="Location Found (Full Address)" rows="1"
+                    required></textarea>
+
+                <textarea name="description" placeholder="Item Description" rows="2" required></textarea><br>
+                <div class="f1">
+                    <input type="text" name="contact-info" placeholder="Your Contact Info" required><br>
+                    <input type="file" name="item-image" placeholder="Upload Image" required accept="image/*"><br>
+                </div>
+
+                <div class="f1">
+                    <input type="text" required name="q1" placeholder="Enter security 1st Question" required><br>
+                    <input type="text" required name="q2" placeholder="Enter security 2nd Question" required><br>
+                </div>
+
+                <button type="button" onclick="saveItem()">Submit Report</button>
+            </form>
+        </div>
+    </div>
+</body>
+<script>
+    const userEmail = sessionStorage.getItem('userEmail');
+
+    // Agar login nahi hua
+    if (!userEmail) {
+        window.location.href = "index.html"; // login page
+    }
+
+
+    document.getElementById('logout-btn').addEventListener('click', function () {
+        sessionStorage.removeItem('userEmail');
+        alert('Logged out successfully!');
+        // Redirect to login page
+        window.location.href = "index.html";
+    });
+</script>
+<script>
+  // --- FIREBASE CONFIG ---
+  const firebaseConfig = { 
+    databaseURL: "https://campus-finder-3f601-default-rtdb.firebaseio.com/" 
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  function saveItem() {
+    const itemname = document.querySelector('input[name="item-name"]').value;
+    const datefound = document.querySelector('input[name="date-found"]').value;
+    const locationfound = document.querySelector('textarea[name="location-found"]').value;
+    const description = document.querySelector('textarea[name="description"]').value;
+    const contactinfo = document.querySelector('input[name="contact-info"]').value;
+    const file = document.querySelector('input[name="item-image"]').files[0]; // file object
+    const q1 = document.querySelector('input[name="q1"]').value;
+    const q2 = document.querySelector('input[name="q2"]').value;
+
+    // Validation
+    if (!itemname || !datefound || !locationfound || !description || !contactinfo || !file || !q1 || !q2) {
+        alert("Please fill all fields and select an image!");
+        return;
+    }
+
+    // Convert file to Base64
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const base64Image = e.target.result;
+
+        const newItem = {
+            itemName: itemname,
+            description: description,
+            dateFound: datefound,
+            location: locationfound,
+            contact: contactinfo,
+            imageBase64: base64Image, // store Base64 in DB
+            securityQ1: q1,
+            securityQ2: q2,
+            userEmail: sessionStorage.getItem('userEmail') || "anonymous",
+            timestamp: new Date().toISOString()
+        };
+
+        // Push to Firebase Realtime Database
+        db.ref('lostItems').push(newItem)
+            .then(() => {
+                alert("Report Submitted Successfully!");
+                document.querySelector('.form').reset();
+            })
+            .catch(error => console.error("Database Error:", error));
+    };
+    reader.readAsDataURL(file); // convert file to Base64
+}
+</script>
+
+</html>

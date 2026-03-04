@@ -1,0 +1,117 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.home {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Blurred Background */
+.home::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('assets/bgg.jpg') no-repeat center center/cover;
+    filter: blur(2px);
+    z-index: -1;
+    transform: scale(1.1);
+}
+
+/* Glass Card */
+.box{
+    width: 450px;
+    padding: 40px 35px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    text-align: center;
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.box img{
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid white;
+    background:white;
+}
+
+.box h2{
+    margin-bottom: 8px;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.box p{
+    margin-bottom: 25px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+
+/* Input Field */
+.box input[type="email"]{
+    border: none;
+    border-radius: 25px;
+    padding: 12px 15px;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: 0.3s;
+}
+
+.box input[type="email"]::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+
+.box input[type="email"]:focus{
+    background: rgba(255,255,255,0.3);
+    border-color: #fff;
+    transform: scale(1.02);
+}
+
+/* Login Button */
+#login-btn{
+    border: none;
+    outline: none;
+    padding: 12px;
+    width: 100%;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    background: linear-gradient(45deg, #2563eb, #1e3a8a);
+    transition: 0.3s ease;
+}
+
+#login-btn:hover{
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+/* Responsive */
+@media(max-width: 420px){
+    .box{
+        width: 90%;
+        padding: 30px 20px;
+    }
+}

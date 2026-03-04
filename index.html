@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/assets/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>Campus Finder | AISC</title>
+</head>
+<body>
+    <div class="home">
+        <div class="box">
+            <img src="assets/aisc-logo.png" alt="AISC Logo">
+            <h2>College Recovery Portal</h2>
+            <p>Login with your college email to continue</p>
+            <input type="email" name="email" placeholder="Enter college email" id="email">
+            <button id="login-btn">Login</button>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById('login-btn').addEventListener('click', function() {
+        const email = document.getElementById('email').value;
+        if(email.endsWith('@aiscpune.org')) {
+            alert('Login successful!');
+            sessionStorage.setItem('userEmail', email);
+            // Redirect to dashboard or another page
+            window.location.href = "home.html";
+        } else {
+            alert('Please enter a valid college email.');
+        }
+    });
+</script>
+</html>

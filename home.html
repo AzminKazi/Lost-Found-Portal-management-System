@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <link rel="shortcut icon" href="/assets/favicon.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <title>Campus Finder | AISC</title>
+    <style>
+        .box button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        .box button:active {
+            transform: scale(0.98);
+        }
+
+        #report-btn {
+            background-color: #2196F3;
+        }
+
+        #report-btn:hover {
+            background-color: #0b7dda;
+        }
+
+        #find-btn {
+            background-color: #f44336;
+        }
+        #find-btn:hover {
+            background-color: #da190b;
+        }
+        
+        /* Logout Button Default Style */
+#logout-btn {
+    position: fixed; /* scroll ke time bhi dikhe */
+    top: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    border: none;
+    background-color: rgb(66, 66, 226);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Hover & Active */
+#logout-btn:hover {
+    background-color: blue;
+    transform: scale(1.05);
+}
+
+#logout-btn:active {
+    transform: scale(0.98);
+}
+
+/* Responsive for smaller screens */
+@media (max-width: 768px) {
+    #logout-btn {
+        top: 15px;
+        right: 15px;
+        padding: 10px 14px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    #logout-btn {
+        top: 10px;
+        right: 10px;
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <div class="home">
+        <button id="logout-btn">Logout</button>
+        <div class="box">
+            <img src="assets/aisc-logo.png" alt="AISC Logo">
+            <h2>College Recovery Portal</h2>
+            <p>Helping students return lost items seamlessly</p>
+            <button id="report-btn">Report Lost Item</button>
+            <button id="find-btn">Find Lost Item</button>
+        </div>
+    </div>
+</body>
+<script>
+    const userEmail = sessionStorage.getItem('userEmail');
+
+    // Agar login nahi hua
+    if (!userEmail) {
+        window.location.href = "index.html"; // login page
+    }
+
+    document.getElementById('report-btn').addEventListener('click', function () {
+        window.location.href = "reportitem.html";
+    });
+    document.getElementById('find-btn').addEventListener('click', function () {
+        window.location.href = "findpage.html";
+    });
+
+    document.getElementById('logout-btn').addEventListener('click', function () {
+        sessionStorage.removeItem('userEmail');
+        alert('Logged out successfully!');
+        // Redirect to login page
+        window.location.href = "index.html";
+    });
+
+
+</script>
+
+</html>

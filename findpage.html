@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+    <script>
+(function(){
+    emailjs.init("bCapJgFMQq6wXIwtR"); // EmailJS dashboard se milega
+})();
+</script>
+    <link rel="stylesheet" href="style.css">
+    <title>Campus Finder | Lost Items</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+        }
+
+        /* Main Wrapper */
+        .home {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        /* Glass Box Container */
+        .box {
+            margin-top: 5vh;
+            width: 93%;
+            min-height: 80vh;
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(8.5px);
+            -webkit-backdrop-filter: blur(8.5px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 25px;
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 25px;
+            justify-items: center;
+        }
+
+        /* Logout Button */
+        #logout-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 18px;
+            border: none;
+            background-color: rgb(66, 66, 226);
+            color: #fff;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        #logout-btn:hover {
+            background-color: blue;
+            transform: scale(1.05);
+        }
+
+        /* ===== CARD DESIGN ===== */
+        .card {
+            width: 100%;
+            max-width: 280px;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            padding: 10px;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+            border-radius: 5px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            margin: 12px 15px 8px;
+            color: #333;
+        }
+
+        .card p {
+            font-size: 13.5px;
+            color: #555;
+            margin: 4px 15px;
+            line-height: 1.4;
+        }
+
+        .card p b {
+            color: #222;
+        }
+
+        .card button {
+            margin: 12px 15px 15px;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 6px;
+            background: rgb(36, 122, 36);
+            color: white;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+            margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .back-btn:active {
+            transform: scale(0.96);
+        }
+
+        .card button:hover {
+            opacity: 0.9;
+            transform: scale(1.03);
+        }
+
+        .claim-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        .claim-form {
+            width: 95%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+            color: white;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .claim-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .claim-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            border-radius: 6px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .claim-form button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            background: rgb(36, 122, 36);
+            color: white;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .claim-form button:hover {
+            background: rgb(28, 95, 28);
+            transform: scale(1.02);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .box {
+                padding: 15px;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="home">
+        <h1>Lost Items</h1>
+        <button id="logout-btn">Logout</button>
+
+        <div class="box" id="itemsContainer">
+            <!-- Items will load here -->
+        </div>
+
+    </div>
+</body>
+
+<script>
+    // 🔒 Login check
+    const userEmail = sessionStorage.getItem('userEmail');
+    if (!userEmail) {
+        window.location.href = "index.html";
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', function () {
+        sessionStorage.removeItem('userEmail');
+        alert('Logged out successfully!');
+        window.location.href = "index.html";
+    });
+
+    // 🔥 Firebase Config (Realtime DB only)
+    const firebaseConfig = {
+        databaseURL: "https://campus-finder-3f601-default-rtdb.firebaseio.com/"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const container = document.getElementById("itemsContainer");
+
+    // 📥 Fetch Lost Items
+    db.ref("lostItems").on("value", snapshot => {
+        container.innerHTML = "";
+
+        if (!snapshot.exists()) {
+            container.innerHTML = "<p>No lost items found.</p>";
+            return;
+        }
+
+        snapshot.forEach(child => {
+            const item = child.val();
+
+            const card = document.createElement("div");
+            card.className = "card";
+
+            card.innerHTML = `
+             ${item.imageBase64 ? `<img src="${item.imageBase64}">` : ""}
+                <h3>${item.itemName}</h3>
+                <p><b>Date:</b> ${item.dateFound}</p>
+                <p><b>Location:</b> ${item.location}</p>
+                <p><b>Description:</b> ${item.description}</p>
+                <p><b>Contact:</b> ${item.contact}</p>
+                <button onclick="showSecurityQuestions('${item.securityQ1}', '${item.securityQ2}', '${item.userEmail}', '${item.itemName}')">Claim Item</button>
+            `;
+
+            container.appendChild(card);
+        });
+    });
+function showSecurityQuestions(q1,q2,itemName, ownerEmail) {
+    const home = document.querySelector('.home');
+    const box = document.querySelector('.box');
+    box.style.display = 'none';
+
+    home.innerHTML = `
+        <button class="back-btn" onclick="location.reload()">⬅ Back</button>
+
+        <div class="claim-wrapper">
+            <form class="claim-form" onsubmit="submitClaim(event, '${itemName}', '${ownerEmail}')">
+                <h2>Answer Security Questions</h2>
+
+                <input type="text" id="ans1" placeholder="${q1}" required>
+                <input type="text" id="ans2" placeholder="${q2}" required>
+
+                <button type="submit">Send Claim</button>
+            </form>
+        </div>
+    `;
+}
+
+    function submitClaim(e,ownerEmail, itemName) {
+        e.preventDefault();
+
+        const ans1 = document.getElementById("ans1").value;
+        const ans2 = document.getElementById("ans2").value;
+        const claimerEmail = sessionStorage.getItem("userEmail");
+
+        const claimData = {
+            itemId: sessionStorage.getItem("claimItemId"),   // ⭐ which item
+            ownerEmail: sessionStorage.getItem("claimOwnerEmail"), // ⭐ item owner
+            claimerEmail: sessionStorage.getItem("userEmail"), // ⭐ who is claiming
+            answer1: ans1,
+            answer2: ans2,
+            status: "Pending",
+            time: new Date().toLocaleString()
+        };
+
+        firebase.database().ref("claims").push(claimData)
+            .then(() => {
+                alert("Claim request sent to item owner!");
+                // location.reload();
+            })
+            .catch(err => alert(err.message));
+
+        emailjs.send("service_98g426g", "template_rnuc3ke", {
+            to_email: ownerEmail,
+            item_name: itemName,
+            claimer_email: claimerEmail,
+            answer1: ans1,
+            answer2: ans2
+        })
+            .then(() => {
+                alert("Claim request sent to item owner 📩");
+                location.reload();
+            })
+            .catch((error) => {
+                alert("Email failed: " + JSON.stringify(error));
+            });
+    }
+</script>
+
+</html>
