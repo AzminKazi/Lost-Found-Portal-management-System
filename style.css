@@ -22,7 +22,7 @@
     position: absolute;
     inset: 0;
     background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                url('assets/bgg.jpg') no-repeat center center/cover;
+                url('bgg.jpg') no-repeat center center/cover;
     filter: blur(2px);
     z-index: -1;
     transform: scale(1.1);
@@ -114,4 +114,5 @@
         width: 90%;
         padding: 30px 20px;
     }
+
 }
